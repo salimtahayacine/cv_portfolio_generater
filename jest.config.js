@@ -12,4 +12,7 @@ module.exports = {
   testMatch: [
     '**/__tests__/**/*.test.{ts,tsx}',
   ],
+  moduleNameMapper: {
+    '^expo$': '<rootDir>/node_modules/expo/src/index.ts',
+  },
 };
