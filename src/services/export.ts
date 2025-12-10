@@ -2,6 +2,7 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { CV } from '../types/cv.types';
 import { Portfolio } from '../types/portfolio.types';
+import { escapeHtml } from '../utils/helpers';
 
 /**
  * Export service for generating HTML/CSS/JS files from CV and Portfolio data
@@ -12,6 +13,7 @@ export const exportService = {
    */
   generateCVHTML(cv: CV): string {
     const { personalInfo, experiences, education, skills, languages } = cv;
+    const e = escapeHtml; // Short alias for escaping
 
     return `
 <!DOCTYPE html>
@@ -19,7 +21,7 @@ export const exportService = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${personalInfo.firstName} ${personalInfo.lastName} - CV</title>
+    <title>${e(personalInfo.firstName)} ${e(personalInfo.lastName)} - CV</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
@@ -41,13 +43,13 @@ export const exportService = {
 </head>
 <body>
     <header>
-        <h1>${personalInfo.firstName} ${personalInfo.lastName}</h1>
+        <h1>${e(personalInfo.firstName)} ${e(personalInfo.lastName)}</h1>
         <div class="contact-info">
-            <p><strong>Email:</strong> ${personalInfo.email}</p>
-            <p><strong>Phone:</strong> ${personalInfo.phone}</p>
-            <p><strong>Address:</strong> ${personalInfo.address}</p>
+            <p><strong>Email:</strong> ${e(personalInfo.email)}</p>
+            <p><strong>Phone:</strong> ${e(personalInfo.phone)}</p>
+            <p><strong>Address:</strong> ${e(personalInfo.address)}</p>
         </div>
-        ${personalInfo.summary ? `<p><strong>Summary:</strong> ${personalInfo.summary}</p>` : ''}
+        ${personalInfo.summary ? `<p><strong>Summary:</strong> ${e(personalInfo.summary)}</p>` : ''}
     </header>
 
     ${experiences.length > 0 ? `
@@ -57,12 +59,12 @@ export const exportService = {
         <div class="item">
             <div class="item-header">
                 <div>
-                    <div class="item-title">${exp.title}</div>
-                    <div class="item-subtitle">${exp.company} - ${exp.location}</div>
+                    <div class="item-title">${e(exp.title)}</div>
+                    <div class="item-subtitle">${e(exp.company)} - ${e(exp.location)}</div>
                 </div>
-                <div class="item-date">${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}</div>
+                <div class="item-date">${e(exp.startDate)} - ${exp.current ? 'Present' : e(exp.endDate)}</div>
             </div>
-            <p>${exp.description}</p>
+            <p>${e(exp.description)}</p>
         </div>
         `).join('')}
     </section>
@@ -75,12 +77,12 @@ export const exportService = {
         <div class="item">
             <div class="item-header">
                 <div>
-                    <div class="item-title">${edu.degree}</div>
-                    <div class="item-subtitle">${edu.school} - ${edu.location}</div>
+                    <div class="item-title">${e(edu.degree)}</div>
+                    <div class="item-subtitle">${e(edu.school)} - ${e(edu.location)}</div>
                 </div>
-                <div class="item-date">${edu.startDate} - ${edu.current ? 'Present' : edu.endDate}</div>
+                <div class="item-date">${e(edu.startDate)} - ${edu.current ? 'Present' : e(edu.endDate)}</div>
             </div>
-            <p>${edu.description}</p>
+            <p>${e(edu.description)}</p>
         </div>
         `).join('')}
     </section>
@@ -90,7 +92,7 @@ export const exportService = {
     <section class="section">
         <h2>Skills</h2>
         <div class="skill-list">
-            ${skills.map(skill => `<span class="skill-item">${skill.name} (${skill.level})</span>`).join('')}
+            ${skills.map(skill => `<span class="skill-item">${e(skill.name)} (${e(skill.level)})</span>`).join('')}
         </div>
     </section>
     ` : ''}
@@ -99,7 +101,7 @@ export const exportService = {
     <section class="section">
         <h2>Languages</h2>
         <div class="language-list">
-            ${languages.map(lang => `<span class="language-item">${lang.name} (${lang.level})</span>`).join('')}
+            ${languages.map(lang => `<span class="language-item">${e(lang.name)} (${e(lang.level)})</span>`).join('')}
         </div>
     </section>
     ` : ''}
@@ -113,6 +115,7 @@ export const exportService = {
    */
   generatePortfolioHTML(portfolio: Portfolio): string {
     const { name, items } = portfolio;
+    const e = escapeHtml; // Short alias for escaping
 
     return `
 <!DOCTYPE html>
@@ -120,7 +123,7 @@ export const exportService = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${name} - Portfolio</title>
+    <title>${e(name)} - Portfolio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
@@ -142,7 +145,7 @@ export const exportService = {
 </head>
 <body>
     <header>
-        <h1>${name}</h1>
+        <h1>${e(name)}</h1>
         <p>My Portfolio</p>
     </header>
 
@@ -151,17 +154,17 @@ export const exportService = {
             ${items.map(item => `
             <div class="portfolio-item">
                 <div class="portfolio-image">
-                    ${item.imageUri ? `<img src="${item.imageUri}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;">` : '<span>No Image</span>'}
+                    ${item.imageUri ? `<img src="${e(item.imageUri)}" alt="${e(item.title)}" style="width: 100%; height: 100%; object-fit: cover;">` : '<span>No Image</span>'}
                 </div>
                 <div class="portfolio-content">
-                    <h2 class="portfolio-title">${item.title}</h2>
-                    <p class="portfolio-description">${item.description}</p>
+                    <h2 class="portfolio-title">${e(item.title)}</h2>
+                    <p class="portfolio-description">${e(item.description)}</p>
                     ${item.tags.length > 0 ? `
                     <div class="portfolio-tags">
-                        ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        ${item.tags.map(tag => `<span class="tag">${e(tag)}</span>`).join('')}
                     </div>
                     ` : ''}
-                    ${item.link ? `<a href="${item.link}" class="portfolio-link" target="_blank">View Project →</a>` : ''}
+                    ${item.link ? `<a href="${e(item.link)}" class="portfolio-link" target="_blank">View Project →</a>` : ''}
                 </div>
             </div>
             `).join('')}

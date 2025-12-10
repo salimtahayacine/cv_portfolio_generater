@@ -52,6 +52,10 @@ const cvSlice = createSlice({
       if (state.currentCV) {
         state.currentCV.experiences.push(action.payload);
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     updateExperience: (state, action: PayloadAction<Experience>) => {
@@ -60,6 +64,10 @@ const cvSlice = createSlice({
         if (index !== -1) {
           state.currentCV.experiences[index] = action.payload;
           state.currentCV.updatedAt = new Date().toISOString();
+          const cvIndex = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+          if (cvIndex !== -1) {
+            state.cvs[cvIndex] = state.currentCV;
+          }
         }
       }
     },
@@ -69,12 +77,20 @@ const cvSlice = createSlice({
           exp => exp.id !== action.payload
         );
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     addEducation: (state, action: PayloadAction<Education>) => {
       if (state.currentCV) {
         state.currentCV.education.push(action.payload);
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     updateEducation: (state, action: PayloadAction<Education>) => {
@@ -83,6 +99,10 @@ const cvSlice = createSlice({
         if (index !== -1) {
           state.currentCV.education[index] = action.payload;
           state.currentCV.updatedAt = new Date().toISOString();
+          const cvIndex = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+          if (cvIndex !== -1) {
+            state.cvs[cvIndex] = state.currentCV;
+          }
         }
       }
     },
@@ -92,12 +112,20 @@ const cvSlice = createSlice({
           edu => edu.id !== action.payload
         );
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     addSkill: (state, action: PayloadAction<Skill>) => {
       if (state.currentCV) {
         state.currentCV.skills.push(action.payload);
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     updateSkill: (state, action: PayloadAction<Skill>) => {
@@ -106,6 +134,10 @@ const cvSlice = createSlice({
         if (index !== -1) {
           state.currentCV.skills[index] = action.payload;
           state.currentCV.updatedAt = new Date().toISOString();
+          const cvIndex = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+          if (cvIndex !== -1) {
+            state.cvs[cvIndex] = state.currentCV;
+          }
         }
       }
     },
@@ -115,12 +147,20 @@ const cvSlice = createSlice({
           skill => skill.id !== action.payload
         );
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     addLanguage: (state, action: PayloadAction<Language>) => {
       if (state.currentCV) {
         state.currentCV.languages.push(action.payload);
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     updateLanguage: (state, action: PayloadAction<Language>) => {
@@ -129,6 +169,10 @@ const cvSlice = createSlice({
         if (index !== -1) {
           state.currentCV.languages[index] = action.payload;
           state.currentCV.updatedAt = new Date().toISOString();
+          const cvIndex = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+          if (cvIndex !== -1) {
+            state.cvs[cvIndex] = state.currentCV;
+          }
         }
       }
     },
@@ -138,6 +182,10 @@ const cvSlice = createSlice({
           lang => lang.id !== action.payload
         );
         state.currentCV.updatedAt = new Date().toISOString();
+        const index = state.cvs.findIndex(cv => cv.id === state.currentCV!.id);
+        if (index !== -1) {
+          state.cvs[index] = state.currentCV;
+        }
       }
     },
     loadCVs: (state, action: PayloadAction<CV[]>) => {
