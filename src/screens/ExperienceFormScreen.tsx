@@ -33,7 +33,7 @@ const experienceSchema = Yup.object().shape({
 });
 
 export default function ExperienceFormScreen({ navigation, route }: ExperienceFormScreenProps) {
-  const { experienceId } = route.params;
+  const { experienceId } = route.params || {};
   const dispatch = useAppDispatch();
   const currentCV = useAppSelector(state => state.cv.currentCV);
   const experience = currentCV?.experiences.find(exp => exp.id === experienceId);

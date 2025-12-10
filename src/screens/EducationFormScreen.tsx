@@ -33,7 +33,7 @@ const educationSchema = Yup.object().shape({
 });
 
 export default function EducationFormScreen({ navigation, route }: EducationFormScreenProps) {
-  const { educationId } = route.params;
+  const { educationId } = route.params || {};
   const dispatch = useAppDispatch();
   const currentCV = useAppSelector(state => state.cv.currentCV);
   const education = currentCV?.education.find(edu => edu.id === educationId);

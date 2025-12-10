@@ -27,7 +27,7 @@ const portfolioItemSchema = Yup.object().shape({
 });
 
 export default function PortfolioItemFormScreen({ navigation, route }: PortfolioItemFormScreenProps) {
-  const { itemId } = route.params;
+  const { itemId } = route.params || {};
   const dispatch = useAppDispatch();
   const currentPortfolio = useAppSelector(state => state.portfolio.currentPortfolio);
   const item = currentPortfolio?.items.find(i => i.id === itemId);

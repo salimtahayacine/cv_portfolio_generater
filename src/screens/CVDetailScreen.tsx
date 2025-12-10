@@ -93,7 +93,7 @@ export default function CVDetailScreen({ navigation, route }: CVDetailScreenProp
           <Button
             mode="outlined"
             icon="plus"
-            onPress={() => navigation.navigate('ExperienceForm', {})}
+            onPress={() => navigation.navigate('ExperienceForm', { experienceId: undefined })}
             style={styles.addButton}
           >
             Add Experience
@@ -119,7 +119,7 @@ export default function CVDetailScreen({ navigation, route }: CVDetailScreenProp
           <Button
             mode="outlined"
             icon="plus"
-            onPress={() => navigation.navigate('EducationForm', {})}
+            onPress={() => navigation.navigate('EducationForm', { educationId: undefined })}
             style={styles.addButton}
           >
             Add Education

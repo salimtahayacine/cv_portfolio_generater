@@ -107,7 +107,7 @@ export default function PortfolioDetailScreen({ navigation, route }: PortfolioDe
           <Button
             mode="outlined"
             icon="plus"
-            onPress={() => navigation.navigate('PortfolioItemForm', {})}
+            onPress={() => navigation.navigate('PortfolioItemForm', { itemId: undefined })}
             style={styles.addButton}
           >
             Add Portfolio Item
