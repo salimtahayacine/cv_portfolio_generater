@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Button, Title, Card, List, FAB, IconButton, Paragraph, Menu, Divider } from 'react-native-paper';
+import { Button, Title, Card, List, FAB, IconButton, Paragraph, Menu } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
