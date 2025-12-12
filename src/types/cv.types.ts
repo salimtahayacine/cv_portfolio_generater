@@ -51,3 +51,12 @@ export interface CV {
   createdAt: string;
   updatedAt: string;
 }
+
+export type ExportFormat = 'html' | 'pdf';
+
+export type CVTemplate = 'modern' | 'classic';
+
+export interface ExportOptions {
+  format: ExportFormat;
+  template?: CVTemplate;
+}
