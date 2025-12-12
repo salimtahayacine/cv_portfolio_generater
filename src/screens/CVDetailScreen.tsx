@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Button, Title, Card, List, FAB, IconButton, Paragraph } from 'react-native-paper';
+import { Button, Title, Card, List, FAB, IconButton, Paragraph, Menu } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { useAppSelector, useAppDispatch } from '../hooks/reduxHooks';
 import { setCurrentCV, deleteCV } from '../store/slices/cvSlice';
 import { exportService } from '../services/export';
+import { ExportFormat, CVTemplate } from '../types/cv.types';
 
 type CVDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CVDetail'>;
 type CVDetailScreenRouteProp = RouteProp<RootStackParamList, 'CVDetail'>;
@@ -20,6 +21,11 @@ export default function CVDetailScreen({ navigation, route }: CVDetailScreenProp
   const { cvId } = route.params;
   const dispatch = useAppDispatch();
   const cv = useAppSelector(state => state.cv.cvs.find(c => c.id === cvId));
+  
+  const [formatMenuVisible, setFormatMenuVisible] = useState(false);
+  const [templateMenuVisible, setTemplateMenuVisible] = useState(false);
+  const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('html');
+  const [selectedTemplate, setSelectedTemplate] = useState<CVTemplate>('modern');
 
   useEffect(() => {
     if (cv) {
@@ -30,8 +36,11 @@ export default function CVDetailScreen({ navigation, route }: CVDetailScreenProp
   const handleExport = async () => {
     if (!cv) return;
     try {
-      await exportService.exportAndShareCV(cv);
-      Alert.alert('Success', 'CV exported and ready to share!');
+      await exportService.exportAndShareCV(cv, {
+        format: selectedFormat,
+        template: selectedTemplate,
+      });
+      Alert.alert('Success', `CV exported as ${selectedFormat.toUpperCase()} with ${selectedTemplate} template!`);
     } catch (error) {
       Alert.alert('Error', 'Failed to export CV. Please try again.');
     }
@@ -147,6 +156,76 @@ export default function CVDetailScreen({ navigation, route }: CVDetailScreenProp
         </List.Section>
 
         <View style={styles.actions}>
+          <Card style={styles.exportCard}>
+            <Card.Content>
+              <Title style={styles.exportTitle}>Export Options</Title>
+              
+              <View style={styles.optionRow}>
+                <Paragraph style={styles.optionLabel}>Format:</Paragraph>
+                <Menu
+                  visible={formatMenuVisible}
+                  onDismiss={() => setFormatMenuVisible(false)}
+                  anchor={
+                    <Button
+                      mode="outlined"
+                      onPress={() => setFormatMenuVisible(true)}
+                      style={styles.selectButton}
+                    >
+                      {selectedFormat.toUpperCase()}
+                    </Button>
+                  }
+                >
+                  <Menu.Item
+                    onPress={() => {
+                      setSelectedFormat('html');
+                      setFormatMenuVisible(false);
+                    }}
+                    title="HTML"
+                  />
+                  <Menu.Item
+                    onPress={() => {
+                      setSelectedFormat('pdf');
+                      setFormatMenuVisible(false);
+                    }}
+                    title="PDF"
+                  />
+                </Menu>
+              </View>
+
+              <View style={styles.optionRow}>
+                <Paragraph style={styles.optionLabel}>Template:</Paragraph>
+                <Menu
+                  visible={templateMenuVisible}
+                  onDismiss={() => setTemplateMenuVisible(false)}
+                  anchor={
+                    <Button
+                      mode="outlined"
+                      onPress={() => setTemplateMenuVisible(true)}
+                      style={styles.selectButton}
+                    >
+                      {selectedTemplate.charAt(0).toUpperCase() + selectedTemplate.slice(1)}
+                    </Button>
+                  }
+                >
+                  <Menu.Item
+                    onPress={() => {
+                      setSelectedTemplate('modern');
+                      setTemplateMenuVisible(false);
+                    }}
+                    title="Modern"
+                  />
+                  <Menu.Item
+                    onPress={() => {
+                      setSelectedTemplate('classic');
+                      setTemplateMenuVisible(false);
+                    }}
+                    title="Classic"
+                  />
+                </Menu>
+              </View>
+            </Card.Content>
+          </Card>
+
           <Button mode="contained" onPress={handleExport} style={styles.exportButton}>
             Export & Share
           </Button>
@@ -177,6 +256,27 @@ const styles = StyleSheet.create({
   actions: {
     padding: 16,
     marginBottom: 20,
+  },
+  exportCard: {
+    marginBottom: 16,
+    elevation: 2,
+  },
+  exportTitle: {
+    fontSize: 18,
+    marginBottom: 12,
+  },
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  selectButton: {
+    minWidth: 120,
   },
   exportButton: {
     marginBottom: 8,

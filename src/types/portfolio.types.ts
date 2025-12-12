@@ -16,3 +16,10 @@ export interface Portfolio {
   createdAt: string;
   updatedAt: string;
 }
+
+export type PortfolioTemplate = 'grid' | 'list';
+
+export interface PortfolioExportOptions {
+  format: 'html' | 'pdf';
+  template?: PortfolioTemplate;
+}

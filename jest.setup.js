@@ -17,6 +17,12 @@ jest.mock('expo-sharing', () => ({
   shareAsync: jest.fn(),
 }));
 
+jest.mock('expo-print', () => ({
+  printToFileAsync: jest.fn().mockResolvedValue({
+    uri: 'file:///mock-pdf-path/output.pdf',
+  }),
+}));
+
 jest.mock('expo-file-system', () => ({
   File: jest.fn().mockImplementation((path, fileName) => ({
     uri: `file://${path}/${fileName}`,
